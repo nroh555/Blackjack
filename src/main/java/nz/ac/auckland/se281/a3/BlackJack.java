@@ -116,6 +116,10 @@ public class BlackJack {
 	protected void printAndUpdateResults(int round) {
 		scores = scoreCard(this.players);
 		dealer.decideIfChangeStrategy(decideTopWinner(), players, scores);
+		for (Player p : players) {
+			System.out.println(
+					"Round " + round + ": " + p.getName() + p.getStatus() + " " + p.getHand().getBet() + " chips");
+		}
 
 	}
 
@@ -123,6 +127,9 @@ public class BlackJack {
 	 * TODO This method should print the statistic of the game when it ends
 	 */
 	protected void printGameStatistics() {
+		for (Player p : players) {
+			System.out.println(p.getName() + " won " + p.wins + " times and lost " + p.lose + " times");
+		}
 	}
 
 	public Player decideTopWinner() {
@@ -176,5 +183,4 @@ public class BlackJack {
 
 		return scores;
 	}
-
 }
