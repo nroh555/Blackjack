@@ -101,6 +101,11 @@ public class BlackJack {
 	 * Task2
 	 */
 	protected void initDealer() {
+		// set the initial strategy using the Strategy pattern
+		this.dealer = new Dealer("Dealer");
+		// The beginning of the game the dealer would target the highest bidder while
+		// after it will target the top winner if net wins >= 2
+		dealer.setHighestBidStrategy(players);
 
 	}
 
@@ -109,6 +114,9 @@ public class BlackJack {
 	 * change this method for Task 2 and Task 3
 	 */
 	protected void printAndUpdateResults(int round) {
+		scores = scoreCard(this.players);
+		dealer.decideIfChangeStrategy(decideTopWinner(), players, scores);
+
 	}
 
 	/**
@@ -116,4 +124,57 @@ public class BlackJack {
 	 */
 	protected void printGameStatistics() {
 	}
+
+	public Player decideTopWinner() {
+		// This function should determine which player has more than 2 net-wins
+		int desiredPos = 0;
+		int maxNetWins = 0;
+		for (int i = 0; i < scores.length; i++) {
+			if ((scores[i] >= 2) && (scores[i] > maxNetWins)) {
+				maxNetWins = scores[i];
+				desiredPos = i; // Determines the position of the player with the most netwins
+			}
+		}
+
+		return players.get(desiredPos);
+	}
+
+	public int[] scoreCard(List<Player> players) {
+		int index = 0;
+		for (Player p : players) {
+			// The case when the player gets BlackJack and the dealer does not
+			if (p.getHand().isBlackJack() && dealer.getHand().getCards().size() > 2) {
+				p.wins++;
+				p.setWin();
+				scores[index] = scores[index] + 1;
+			}
+
+			// The case when the player's hand is greater than the dealer's hand and the
+			// player is not busted
+			else if ((dealer.getHand().getScore() < p.getHand().getScore()) && (p.getHand().getScore() <= 21)) {
+				p.wins++;
+				p.setWin();
+				scores[index] = scores[index] + 1;
+			}
+
+			// The case when the dealer is busted and the players are not
+			else if (p.getHand().getScore() <= 21 && dealer.getHand().getScore() > 21) {
+				p.wins++;
+				p.setWin();
+				scores[index] = scores[index] + 1;
+			}
+
+			// All losing cases
+			else {
+				p.lose++;
+				p.setLose();
+				scores[index] = scores[index] - 1;
+			}
+
+			index++;
+		}
+
+		return scores;
+	}
+
 }

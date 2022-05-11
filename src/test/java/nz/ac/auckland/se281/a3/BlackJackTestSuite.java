@@ -45,8 +45,8 @@ import nz.ac.auckland.se281.a3.bot.Bot;
 
 @RunWith(Suite.class)
 @SuiteClasses({ BlackJackTestSuite.Task1Test.class, //
-//		BlackJackTestSuite.Task2Test.class, //
-//		BlackJackTestSuite.Task3Test.class, //
+// BlackJackTestSuite.Task2Test.class, //
+// BlackJackTestSuite.Task3Test.class, //
 // BlackJackTestSuite.YourTest.class //
 })
 
@@ -297,6 +297,26 @@ public class BlackJackTestSuite {
 					}
 				}
 			}
+		}
+
+		@Test
+		public void T1_08_not_always_hit_random() throws InterruptedException {
+			scanner = new Scanner("R");
+			blackJack.initBots();
+			sanityCheck();
+			Hand hand = new Hand();
+			hand.addCard(new Card(ACE, DIAMONDS));
+			hand.addCard(new Card(FOUR, DIAMONDS));
+			boolean foundHit = false;
+			outer: for (int i = 0; i < 1000; i++) {
+				for (int index : Arrays.asList(1, 2)) { // need to check list position 1 and 2
+					if (blackJack.getPlayers().get(index).decideAction(hand).equals(HOLD)) {
+						foundHit = true;
+						break outer;
+					}
+				}
+			}
+			assertTrue("the bot always hits, you need to implement the strategies!", foundHit);
 		}
 	}
 
@@ -704,7 +724,7 @@ public class BlackJackTestSuite {
 			runCommands(blackJack, "LR", "100", "hold", " ", " ", " ", "no");
 
 			StringBuilder sBuilder = new StringBuilder();
-			sBuilder.append("Round 1: Player1 lost 100 chips"); // because also dealer has balcjack
+			sBuilder.append("Round 1: Player1 lost 100 chips"); // because also dealer has blackjack
 			sBuilder.append(nl);
 			sBuilder.append("Round 1: Bot1 lost " + blackJack.getPlayers().get(1).getHand().getBet() + " chips");
 			sBuilder.append(nl);
