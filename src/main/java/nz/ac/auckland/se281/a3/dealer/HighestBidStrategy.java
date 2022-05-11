@@ -10,6 +10,11 @@ public class HighestBidStrategy implements DealerStrategy {
 
 	private List<Player> players;
 
+	/**
+	 * The constructor would instantiate the highestBidStrategy
+	 * 
+	 * @param players The players of the game
+	 */
 	public HighestBidStrategy(List<Player> players) {
 		this.players = players;
 	}
@@ -27,8 +32,12 @@ public class HighestBidStrategy implements DealerStrategy {
 			index++;
 		}
 
-		// The dealer still has a chance to beat the player
-		if (this.players.get(desiredPos).getHand().getScore() < 21) {
+		// The dealer still has a chance to beat the player so it will keep hitting
+		// until it
+		// has a hand greater than the desired player or busted
+		if ((this.players.get(desiredPos).getHand().getScore() < 21)
+				|| (this.players.get(desiredPos).getHand().getScore() == 21
+						&& this.players.get(desiredPos).getHand().getCards().size() > 2)) {
 			if (hand.getScore() < this.players.get(desiredPos).getHand().getScore()) {
 				return Action.HIT;
 			}
@@ -38,9 +47,9 @@ public class HighestBidStrategy implements DealerStrategy {
 			}
 		}
 
-		// The case when the player has gotten blackJack and the dealer can't win the
+		// The case when the player has gotten blackjack and the dealer can't win the
 		// player
-		else if (this.players.get(desiredPos).getHand().getScore() == 21) {
+		else if (this.players.get(desiredPos).getHand().isBlackJack()) {
 			if (hand.getScore() >= 17) {
 				return Action.HOLD;
 			}
@@ -50,8 +59,8 @@ public class HighestBidStrategy implements DealerStrategy {
 			}
 		}
 
+		// The dealer will hold if player is busted
 		else if (this.players.get(desiredPos).getHand().getScore() > 21) {
-			// The dealer will hold if player is busted
 			return Action.HOLD;
 		}
 

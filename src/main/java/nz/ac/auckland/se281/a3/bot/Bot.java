@@ -10,6 +10,11 @@ public class Bot extends Player {
 
 	private BotStrategy strategy;
 
+	/**
+	 * This constructor would instantiate the bot
+	 * 
+	 * @param name of the bot
+	 */
 	public Bot(String name) {
 		super(name);
 	}

@@ -114,7 +114,9 @@ public class BlackJack {
 	 * change this method for Task 2 and Task 3
 	 */
 	protected void printAndUpdateResults(int round) {
+		// Calculates the scores of each player after every round
 		scores = scoreCard(this.players);
+		// Checks if the strategy of the dealer needs to be changed or not
 		dealer.decideIfChangeStrategy(decideTopWinner(), players, scores);
 		for (Player p : players) {
 			System.out.println(
@@ -128,30 +130,45 @@ public class BlackJack {
 	 */
 	protected void printGameStatistics() {
 		for (Player p : players) {
-			System.out.println(p.getName() + " won " + p.wins + " times and lost " + p.lose + " times");
+			System.out.println(p.getName() + " won " + p.win + " times and lost " + p.lose + " times");
 		}
 	}
 
+	/**
+	 * This method would determine the scores of the players and decide which of
+	 * them has the greatest net wins (net wins must be greater or equal to 2) and
+	 * return this player who represents the top winner.
+	 * 
+	 * @return player The player with the greatest net wins
+	 */
 	public Player decideTopWinner() {
-		// This function should determine which player has more than 2 net-wins
 		int desiredPos = 0;
 		int maxNetWins = 0;
 		for (int i = 0; i < scores.length; i++) {
 			if ((scores[i] >= 2) && (scores[i] > maxNetWins)) {
 				maxNetWins = scores[i];
-				desiredPos = i; // Determines the position of the player with the most netwins
+				desiredPos = i; // The position of the player with the most net wins
 			}
 		}
 
 		return players.get(desiredPos);
 	}
 
+	/**
+	 * This method would determine if each of the players beat the dealer or not
+	 * followed by updating the score card which keeps track of the total numbers of
+	 * wins and loses.
+	 * 
+	 * @param players The players of the game
+	 * @return The score card containing the result of each round
+	 */
+
 	public int[] scoreCard(List<Player> players) {
 		int index = 0;
 		for (Player p : players) {
 			// The case when the player gets BlackJack and the dealer does not
 			if (p.getHand().isBlackJack() && dealer.getHand().getCards().size() > 2) {
-				p.wins++;
+				p.win++;
 				p.setWin();
 				scores[index] = scores[index] + 1;
 			}
@@ -159,14 +176,14 @@ public class BlackJack {
 			// The case when the player's hand is greater than the dealer's hand and the
 			// player is not busted
 			else if ((dealer.getHand().getScore() < p.getHand().getScore()) && (p.getHand().getScore() <= 21)) {
-				p.wins++;
+				p.win++;
 				p.setWin();
 				scores[index] = scores[index] + 1;
 			}
 
 			// The case when the dealer is busted and the players are not
 			else if (p.getHand().getScore() <= 21 && dealer.getHand().getScore() > 21) {
-				p.wins++;
+				p.win++;
 				p.setWin();
 				scores[index] = scores[index] + 1;
 			}

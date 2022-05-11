@@ -8,14 +8,23 @@ public class TopWinnerStrategy implements DealerStrategy {
 
 	private Player topWinner;
 
+	/**
+	 * The constructor would instantiate the topWinnerStrategy. Note that the top
+	 * winner must be decide first before the strategy is instantiated
+	 * 
+	 * @param topWinner The topWinner of the game
+	 */
 	public TopWinnerStrategy(Player topWinner) {
 		this.topWinner = topWinner;
 	}
 
 	@Override
 	public Action decideAction(Hand hand) {
-		// The dealer still has a chance to beat the player
-		if (this.topWinner.getHand().getScore() < 21) {
+		// The dealer still has a chance to beat the player so dealer would keep hitting
+		// until the dealer has a score equal to the player
+		if ((topWinner.getHand().getScore() < 21)
+				|| (topWinner.getHand().getScore() == 21 && topWinner.getHand().getCards().size() > 2)) {
+
 			if (hand.getScore() < this.topWinner.getHand().getScore()) {
 				return Action.HIT;
 			}
@@ -25,9 +34,9 @@ public class TopWinnerStrategy implements DealerStrategy {
 			}
 		}
 
-		// The case when the player has gotten blackJack and the dealer can't win the
-		// player
-		else if (this.topWinner.getHand().getScore() == 21) {
+		// The case when the player has gotten blackjack and the dealer can't win the
+		// player anymore
+		else if (this.topWinner.getHand().isBlackJack()) {
 			if (hand.getScore() >= 17) {
 				return Action.HOLD;
 			}
