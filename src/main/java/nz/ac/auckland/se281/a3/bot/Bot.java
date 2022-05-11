@@ -8,18 +8,28 @@ import nz.ac.auckland.se281.a3.Player;
  */
 public class Bot extends Player {
 
+	private BotStrategy strategy;
+
 	public Bot(String name) {
 		super(name);
 	}
 
 	@Override
 	public Action decideAction(Hand hand) {
-		return Action.HOLD;
+		return strategy.decideAction(hand);
 	}
 
 	@Override
 	public int makeABet() {
-		return 1;
+		return strategy.makeABet();
+	}
+
+	public BotStrategy getStrategy() {
+		return strategy;
+	}
+
+	public void setStrategy(BotStrategy strategy) {
+		this.strategy = strategy;
 	}
 
 }

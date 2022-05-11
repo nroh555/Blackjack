@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import nz.ac.auckland.se281.a3.bot.Bot;
+import nz.ac.auckland.se281.a3.bot.BotStrategy;
+import nz.ac.auckland.se281.a3.bot.StrategyFactory;
 import nz.ac.auckland.se281.a3.dealer.Dealer;
 
 /**
@@ -14,6 +16,7 @@ import nz.ac.auckland.se281.a3.dealer.Dealer;
 public class BlackJack {
 
 	private List<Player> players;
+	private int[] scores = { 0, 0, 0 };
 	private Dealer dealer;
 	private Deck deck;
 
@@ -24,7 +27,7 @@ public class BlackJack {
 	}
 
 	/**
-	 * Thi constructor is for testing reasons
+	 * This constructor is for testing reasons
 	 * 
 	 * @param cards
 	 */
@@ -81,10 +84,16 @@ public class BlackJack {
 	protected void initBots() {
 		Bot bot1 = new Bot("Bot1");
 		Bot bot2 = new Bot("Bot2");
-		// String botStrategyString = getBotStrategy(); // UNCOMMENT THIS
-		// create and set Bots strategy here
+		String botStrategyString = getBotStrategy(); // UNCOMMENT THIS
 		players.add(bot1);
 		players.add(bot2);
+
+		// create and set Bots strategy here
+		// Uses the factory design pattern to specify the desired strategy
+		BotStrategy botStrategyOne = StrategyFactory.createStrategy(botStrategyString);
+		BotStrategy botStrategyTwo = StrategyFactory.createStrategy(botStrategyString);
+		bot1.setStrategy(botStrategyOne);
+		bot2.setStrategy(botStrategyTwo);
 	}
 
 	/**
@@ -92,8 +101,7 @@ public class BlackJack {
 	 * Task2
 	 */
 	protected void initDealer() {
-		// set the initial strategy using the Strategy pattern
-		dealer = new Dealer("Dealer");
+
 	}
 
 	/**
@@ -101,14 +109,11 @@ public class BlackJack {
 	 * change this method for Task 2 and Task 3
 	 */
 	protected void printAndUpdateResults(int round) {
-
 	}
 
 	/**
 	 * TODO This method should print the statistic of the game when it ends
 	 */
 	protected void printGameStatistics() {
-
 	}
-
 }
