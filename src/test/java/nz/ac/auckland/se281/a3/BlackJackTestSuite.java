@@ -863,7 +863,7 @@ public class BlackJackTestSuite {
 		}
 
 		@Test
-		public void T1_08_not_always_hit_random() throws InterruptedException {
+		public void Own_01_not_always_hit_random() throws InterruptedException {
 			scanner = new Scanner("R");
 			blackJack.initBots();
 			sanityCheck();
@@ -880,6 +880,119 @@ public class BlackJackTestSuite {
 				}
 			}
 			assertTrue("the bot always hits, you need to implement the strategies!", foundHit);
+		}
+
+		@Test
+		public void Own_02_everyone_blackjack() {
+			BlackJack blackJack = new BlackJack(new Card(KING, CLUBS), new Card(ACE, CLUBS), // human got blackjack
+					new Card(ACE, DIAMONDS), new Card(JACK, HEARTS), // BOT1 blackjack
+					new Card(ACE, HEARTS), new Card(JACK, SPADES), // BOT2 blackjack
+					new Card(KING, SPADES), new Card(ACE, SPADES) // dealer should have blackjack
+			);
+			runCommands(blackJack, "HR", "100", " ", " ", " ", "no");
+			assertContains("Player1 won 0 times and lost 1 times");
+			assertContains("Bot1 won 0 times and lost 1 times");
+			assertContains("Bot2 won 0 times and lost 1 times");
+
+		}
+
+		@Test
+		public void Own_03_player_blackjack_dealer_21() {
+			BlackJack blackJack = new BlackJack(new Card(KING, CLUBS), new Card(ACE, CLUBS), // human got blackjack
+					new Card(ACE, DIAMONDS), new Card(JACK, HEARTS), // BOT1 blackjack
+					new Card(ACE, HEARTS), new Card(JACK, SPADES), // BOT2 blackjack
+					new Card(KING, SPADES), new Card(TWO, SPADES), new Card(NINE, HEARTS) // dealer should get 21
+			);
+			runCommands(blackJack, "LR", "100", " ", " ", " ", "no");
+			assertContains("Player1 won 1 times and lost 0 times");
+			assertContains("Bot1 won 1 times and lost 0 times");
+			assertContains("Bot2 won 1 times and lost 0 times");
+
+		}
+
+		@Test
+		public void Own_04_player_21_dealer_blackjack() {
+			BlackJack blackJack = new BlackJack(new Card(KING, CLUBS), new Card(TWO, CLUBS), new Card(NINE, HEARTS), // human
+																														// got
+																														// 21
+					new Card(KING, DIAMONDS), new Card(TWO, HEARTS), new Card(NINE, CLUBS), // BOT1 got 21
+					new Card(ACE, HEARTS), new Card(TWO, SPADES), new Card(JACK, CLUBS), new Card(EIGHT, DIAMONDS), // BOT2
+																													// got
+																													// 21
+					new Card(KING, SPADES), new Card(ACE, SPADES) // dealer should get blackjack
+			);
+			runCommands(blackJack, "LR", "100", "hit", " ", " ", "", "no");
+			assertContains("Player1 won 0 times and lost 1 times");
+			assertContains("Bot1 won 0 times and lost 1 times");
+			assertContains("Bot2 won 0 times and lost 1 times");
+
+		}
+
+		@Test
+		public void Own_05_everyone_21() {
+			BlackJack blackJack = new BlackJack(new Card(KING, CLUBS), new Card(SEVEN, CLUBS), new Card(FOUR, HEARTS), // human
+					// got
+					// 21
+					new Card(KING, DIAMONDS), new Card(EIGHT, HEARTS), new Card(THREE, CLUBS), // BOT1 got 21
+					new Card(ACE, HEARTS), new Card(TWO, SPADES), new Card(JACK, CLUBS), new Card(EIGHT, DIAMONDS), // BOT2
+					// got
+					// 21
+					new Card(KING, SPADES), new Card(FIVE, SPADES), new Card(TWO, HEARTS), new Card(ACE, CLUBS),
+					new Card(THREE, DIAMONDS) // dealer should get 21 and wins everyone
+			);
+			runCommands(blackJack, "HR", "100", "hit", " ", " ", "", "no");
+			assertContains("Player1 won 0 times and lost 1 times");
+			assertContains("Bot1 won 0 times and lost 1 times");
+			assertContains("Bot2 won 0 times and lost 1 times");
+
+		}
+
+		@Test
+		public void Own_06_Dealer_Should_Hold() {
+			BlackJack blackJack = new BlackJack(new Card(KING, CLUBS), new Card(SEVEN, CLUBS), // human 17
+					new Card(KING, DIAMONDS), new Card(ACE, HEARTS), // BOT1 got blackjack
+					new Card(ACE, HEARTS), new Card(KING, SPADES), // BOT2 got blackjack
+					// got
+					// 21
+					new Card(KING, SPADES), new Card(FIVE, SPADES), new Card(TWO, HEARTS) // dealer gets 17 and holds
+			);
+			runCommands(blackJack, "HR", "100", "hold", " ", " ", "", "no");
+			assertContains("Round 1: Player1 lost 100 chips"); // because also dealer has blackjack
+			assertContains("Round 1: Bot1 won ");
+			assertContains("Round 1: Bot2 won ");
+
+		}
+
+		@Test
+		public void Own_07_Dealer_Should_Hit_Until_17() {
+			BlackJack blackJack = new BlackJack(new Card(KING, CLUBS), new Card(ACE, CLUBS), // human blackjack
+					new Card(KING, DIAMONDS), new Card(SEVEN, HEARTS), // BOT1 got 12
+					new Card(QUEEN, HEARTS), new Card(EIGHT, SPADES), // BOT2 got 12
+					// got
+					// 21
+					new Card(KING, SPADES), new Card(FIVE, SPADES), new Card(TWO, CLUBS) // dealer will hit
+			);
+			runCommands(blackJack, "LR", "100", " ", " ", "", "no");
+			assertContains("Round 1: Player1 won 100 chips"); // because also dealer has blackjack
+			assertContains("Round 1: Bot1 lost ");
+			assertContains("Round 1: Bot2 won ");
+
+		}
+
+		@Test
+		public void Own_08_Top_Busted() {
+			BlackJack blackJack = new BlackJack(new Card(KING, CLUBS), new Card(KING, CLUBS), new Card(KING, DIAMONDS), // human
+																														// is
+																														// busted
+					new Card(KING, DIAMONDS), new Card(ACE, HEARTS), // BOT1 got blackjack
+					new Card(QUEEN, HEARTS), new Card(ACE, SPADES), // BOT2 got blackjack
+					new Card(KING, SPADES), new Card(FIVE, SPADES)// dealer will always hold
+			);
+			runCommands(blackJack, "LR", "100", "hit", "", " ", "", "no");
+			assertContains("Round 1: Player1 lost 100 chips"); // because also dealer has blackjack
+			assertContains("Round 1: Bot1 won ");
+			assertContains("Round 1: Bot2 won ");
+
 		}
 
 	}
