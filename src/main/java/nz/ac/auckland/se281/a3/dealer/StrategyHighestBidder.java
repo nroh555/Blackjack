@@ -6,16 +6,17 @@ import nz.ac.auckland.se281.a3.Hand;
 import nz.ac.auckland.se281.a3.Participant.Action;
 import nz.ac.auckland.se281.a3.Player;
 
-public class HighestBidStrategy implements DealerStrategy {
+public class StrategyHighestBidder implements DealerStrategy {
 
 	private List<Player> players;
 
 	/**
-	 * The constructor would instantiate the highestBidStrategy
+	 * The constructor would instantiate the highestBidStrategy which will target
+	 * the highest bidder for each of the round
 	 * 
 	 * @param players The players of the game
 	 */
-	public HighestBidStrategy(List<Player> players) {
+	public StrategyHighestBidder(List<Player> players) {
 		this.players = players;
 	}
 

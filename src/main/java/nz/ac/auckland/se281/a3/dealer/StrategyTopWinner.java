@@ -4,7 +4,7 @@ import nz.ac.auckland.se281.a3.Hand;
 import nz.ac.auckland.se281.a3.Participant.Action;
 import nz.ac.auckland.se281.a3.Player;
 
-public class TopWinnerStrategy implements DealerStrategy {
+public class StrategyTopWinner implements DealerStrategy {
 
 	private Player topWinner;
 
@@ -14,7 +14,7 @@ public class TopWinnerStrategy implements DealerStrategy {
 	 * 
 	 * @param topWinner The topWinner of the game
 	 */
-	public TopWinnerStrategy(Player topWinner) {
+	public StrategyTopWinner(Player topWinner) {
 		this.topWinner = topWinner;
 	}
 
@@ -46,8 +46,8 @@ public class TopWinnerStrategy implements DealerStrategy {
 			}
 		}
 
+		// The dealer will hold if player is busted
 		else if (this.topWinner.getHand().getScore() > 21) {
-			// The dealer will hold if player is busted
 			return Action.HOLD;
 		}
 

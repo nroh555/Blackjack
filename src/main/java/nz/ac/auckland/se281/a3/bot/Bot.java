@@ -11,7 +11,7 @@ public class Bot extends Player {
 	private BotStrategy strategy;
 
 	/**
-	 * This constructor would instantiate the bot
+	 * This constructor would instantiate the bot which is a player of the game
 	 * 
 	 * @param name of the bot
 	 */

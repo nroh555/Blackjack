@@ -16,7 +16,8 @@ public class Dealer extends Participant {
 	private DealerStrategy strategy;
 
 	/**
-	 * This constructor would instantiate the dealer
+	 * This constructor would instantiate the dealer so it would act as a
+	 * participant
 	 * 
 	 * @param name The name of the dealer
 	 */
@@ -34,7 +35,7 @@ public class Dealer extends Participant {
 	 * @param players The players of the blackjack game
 	 */
 	public void setHighestBidStrategy(List<Player> players) {
-		this.strategy = new HighestBidStrategy(players);
+		this.strategy = new StrategyHighestBidder(players);
 	}
 
 	/**
@@ -48,11 +49,11 @@ public class Dealer extends Participant {
 	 */
 	public void decideIfChangeStrategy(Player topWinner, List<Player> players, int[] scores) {
 		if (scores[0] >= 2 || scores[1] >= 2 || scores[2] >= 2) {
-			this.strategy = new TopWinnerStrategy(topWinner);
+			this.strategy = new StrategyTopWinner(topWinner);
 		}
 
 		else {
-			this.strategy = new HighestBidStrategy(players);
+			this.strategy = new StrategyHighestBidder(players);
 		}
 	}
 

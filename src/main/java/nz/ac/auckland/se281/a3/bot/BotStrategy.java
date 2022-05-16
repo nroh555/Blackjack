@@ -14,6 +14,12 @@ public interface BotStrategy {
 	 */
 	Action decideAction(Hand hand);
 
+	/**
+	 * This method would allow the players of the game to make a bet within a
+	 * specified range
+	 * 
+	 * @return bet The bet of each player
+	 */
 	int makeABet();
 
 }

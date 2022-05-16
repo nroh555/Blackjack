@@ -11,15 +11,15 @@ public class StrategyFactory {
 	 */
 	public static BotStrategy createStrategy(String type) {
 		switch (type) {
+		// If the user inputs R, this would instantiate the random strategy
 		case "R":
-			return new RandomStrategy();
-
+			return new StrategyRandom();
+		// If the user inputs LR, this would instantiate the low risk strategy
 		case "LR":
-			return new LowRiskStrategy();
-
+			return new StrategyLowRisk();
+		// If the user inputs HR, this would instantiate the high risk strategy
 		case "HR":
-			return new HighRiskStrategy();
-
+			return new StrategyHighRisk();
 		default:
 			System.err.println("wrong strategy type");
 			System.exit(0);

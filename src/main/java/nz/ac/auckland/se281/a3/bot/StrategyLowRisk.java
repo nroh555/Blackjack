@@ -5,21 +5,19 @@ import java.util.Random;
 import nz.ac.auckland.se281.a3.Hand;
 import nz.ac.auckland.se281.a3.Participant.Action;
 
-public class HighRiskStrategy implements BotStrategy {
+public class StrategyLowRisk implements BotStrategy {
 
 	@Override
 	public Action decideAction(Hand hand) {
-		if (hand.getScore() < 19) {
+		if (hand.getScore() < 17) {
 			return Action.HIT;
 		}
-
 		return Action.HOLD;
 	}
 
 	@Override
 	public int makeABet() {
-		// Returns a random integer between 50(inclusive) and 100(inclusive)
-		return new Random().nextInt(50, 101);
+		// Returns a random integer between 10(inclusive) and 50(inclusive)
+		return new Random().nextInt(10, 51);
 	}
-
 }
